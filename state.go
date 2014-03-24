@@ -95,7 +95,7 @@ func (o *State) init() {
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Printf("'%s' %s created\n", "uuid/", "UUIDState")
-			os.Mkdir("uuid" + "/", os.ModeDir)
+			os.Mkdir("uuid" + "/", os.ModeDir | 0755)
 			o.check, err = os.Create("uuid" + "/" + "state.unique")
 			if err != nil {
 				log.Println("UUID.State.init: file error:", err)
