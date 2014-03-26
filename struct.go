@@ -65,8 +65,8 @@ func (o *UUIDStruct) Bytes() (data []byte) {
 }
 
 // Marshals the UUID bytes into a slice
-func (r UUIDStruct) MarshalBinary() ([]byte, error) {
-	return r.Bytes(), nil
+func (o *UUIDStruct) MarshalBinary() ([]byte, error) {
+	return o.Bytes(), nil
 }
 
 // Un-marshals the data bytes into the UUID struct.

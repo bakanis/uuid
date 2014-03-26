@@ -45,7 +45,7 @@ const (
 	// or closing bracket or any of the hyphens are optional.
 	// It is only used to extract the main bytes to create a UUID,
 	// so these imperfections are of no consequence.
-	hexPattern = `^(urn\:uuid\:)?[\{(]?([A-Fa-f0-9]{8})-?([A-Fa-f0-9]{4})-?([1-5][A-Fa-f0-9]{3})-?([A-Fa-f0-9]{4})-?([A-Fa-f0-9]{12})[\})]?$`
+	hexPattern = `^(urn\:uuid\:)?[\{(\[]?([A-Fa-f0-9]{8})-?([A-Fa-f0-9]{4})-?([1-5][A-Fa-f0-9]{3})-?([A-Fa-f0-9]{4})-?([A-Fa-f0-9]{12})[\]\})]?$`
 )
 
 var (
@@ -54,7 +54,7 @@ var (
 )
 
 func init() {
-	SwitchFormat(CurlyHypen, true)
+	SwitchFormat(CurlyHyphen, true)
 }
 
 // ******************************************************  UUID
@@ -211,7 +211,7 @@ const (
 	Curly
 	Bracket
 	CleanHyphen
-	CurlyHypen
+	CurlyHyphen
 	BracketHyphen
 	GoIdFormat
 )
@@ -230,7 +230,7 @@ func SwitchFormat(pFormat UUIDFormat, pUpperCase bool) {
 		format = "(%x%x%x%x%x%x)"
 	case CleanHyphen:
 		format = "%x-%x-%x-%x%x-%x"
-	case CurlyHypen:
+	case CurlyHyphen:
 		format = "{%x-%x-%x-%x%x-%x}"
 	case BracketHyphen:
 		format = "(%x-%x-%x-%x%x-%x)"
