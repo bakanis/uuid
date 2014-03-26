@@ -57,8 +57,8 @@ func (o *UUIDArray) setRFC4122Variant() {
 }
 
 // Marshals the UUID bytes into a slice
-func (o *UUIDArray) MarshalBinary() (data []byte, err error) {
-	return o[:], nil
+func (o *UUIDArray) MarshalBinary() ([]byte, error) {
+	return o.Bytes(), nil
 }
 
 // Un-marshals the data bytes into the UUID.
