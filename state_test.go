@@ -10,6 +10,15 @@ import (
 	"time"
 )
 
+var state_bytes = []byte{
+	0xAA, 0xCF, 0xEE, 0x12,
+	0xD4, 0x00,
+	0x27, 0x23,
+	0x00,
+	0xD3,
+	0x23, 0x12, 0x4A, 0x11, 0x89, 0xFF,
+}
+
 func TestUUID_StateSeed(t *testing.T) {
 	if state.past < Timestamp((1391463463*10000000) + (100*10) + gregorianToUNIXOffset) {
 		t.Errorf("Expected a value greater than 02/03/2014 @ 9:37pm in UTC but got %d", state.past)
@@ -25,7 +34,7 @@ func TestUUID_StateSeed(t *testing.T) {
 func TestUUIDState_read(t *testing.T) {
 	s := new(State)
 	s.past = Timestamp((1391463463*10000000) + (100*10) + gregorianToUNIXOffset)
-	s.node = uuidBytes
+	s.node = state_bytes
 
 	now := Timestamp((1391463463*10000000) + (100*10))
 	s.read(now + (100*10), make([]byte, length))
@@ -35,7 +44,7 @@ func TestUUIDState_read(t *testing.T) {
 					"older than the state past time and the node" +
 					"id are not the same.", s.sequence)
 	}
-	s.read(now, uuidBytes)
+	s.read(now, state_bytes)
 
 	if s.sequence == 1 {
 		t.Error("The sequence should be randomly generated when" +
@@ -44,7 +53,7 @@ func TestUUIDState_read(t *testing.T) {
 
 	s = new(State)
 	s.past = Timestamp((1391463463*10000000) + (100*10) + gregorianToUNIXOffset)
-	s.node = uuidBytes
+	s.node = state_bytes
 	s.randomSequence = true
 	s.read(now, make([]byte, length))
 
@@ -75,7 +84,7 @@ func TestUUIDState_saveSchedule(t *testing.T) {
 	count := 0
 	now := time.Now()
 	state.next = timestamp()
-	for i := 0; i < 90000000; i++ {
+	for i := 0; i < 30000000; i++ {
 		now = time.Now()
 		NewV1()
 		if lastTimestamp >= state.next {

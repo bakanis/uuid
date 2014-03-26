@@ -152,7 +152,7 @@ func TestUUID_NewV5Bulk(t *testing.T) {
 
 // A small test to test uniqueness across all UUIDs created
 func TestUUID_EachIsUnique(t *testing.T) {
-	s := 4000
+	s := 1000
 	ids := make([]UUID, s)
 	for i := 0; i < s; i++ {
 		u := NewV1()

@@ -8,58 +8,27 @@ import (
 	"testing"
 )
 
-// Tests all possible variants with their respective bits set
-// Tests whether the expected output comes out on each byte case
-func TestUUIDStruct_VarientBits(t *testing.T) {
-	for _, v := range uuidVariants {
-		for i := 0; i <= 255; i ++ {
-			uuidBytes[variantIndex] = byte(i)
-
-			uStruct := createUUIDStruct(uuidBytes, 4, v)
-			b := uStruct.sequenceHiAndVariant>>4
-			t_VariantConstraint(v, b, uStruct, t)
-
-			if uStruct.Variant() != v {
-				t.Errorf("%d does not resolve to %x: get %x", i, v, uStruct.Variant())
-			}
-		}
-	}
-}
-
-// Tests all possible version numbers and that
-// each number returned is the same
-func TestUUIDStruct_VersionBits(t *testing.T) {
-	uStruct := new(UUIDStruct)
-	for v := 0; v < 16; v++ {
-		for i := 0; i <= 255; i ++ {
-			uuidBytes[versionIndex] = byte(i)
-			uStruct.Unmarshal(uuidBytes)
-			uStruct.setVersion(v)
-			output(uStruct)
-			if uStruct.Version() != v {
-				t.Errorf("%x does not resolve to %x", byte(uStruct.Version()), v)
-			}
-			output("\n")
-		}
-	}
+var struct_bytes = []byte{
+	0xAA, 0xCF, 0xEE, 0x12,
+	0xD4, 0x00,
+	0x27, 0x23,
+	0x00,
+	0xD3,
+	0x23, 0x12, 0x4A, 0x11, 0x89, 0xFF,
 }
 
 func TestUUIDStruct_UnmarshalBinary(t *testing.T) {
 	u := new(UUIDStruct)
+	u.size = length
 	err := u.UnmarshalBinary([]byte{1, 2, 3, 4, 5})
 	if err == nil {
 		t.Errorf("Expected error due to invalid byte length")
 	}
-	err = u.UnmarshalBinary(uuidBytes)
+	err = u.UnmarshalBinary(struct_bytes)
 	if err != nil {
 		t.Errorf("Expected bytes")
 	}
 }
 
-func createUUIDStruct(pData []byte, pVersion int, pVariant byte) *UUIDStruct {
-	o := new(UUIDStruct)
-	o.Unmarshal(pData)
-	o.setVersion(pVersion)
-	o.setVariant(pVariant)
-	return o
-}
+
+

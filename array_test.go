@@ -8,40 +8,13 @@ import (
 	"testing"
 )
 
-// Tests all possible variants with their respective bits set
-// Tests whether the expected output comes out on each byte case
-func TestUUIDArray_VarientBits(t *testing.T) {
-	for _, v := range uuidVariants {
-		for i := 0; i <= 255; i ++ {
-			uuidBytes[variantIndex] = byte(i)
-
-			uArray := createUUIDArray(uuidBytes, 4, v)
-			b := uArray[variantIndex]>>4
-			t_VariantConstraint(v, b, uArray, t)
-
-			if uArray.Variant() != v {
-				t.Errorf("%d does not resolve to %x", i, v)
-			}
-		}
-	}
-}
-
-// Tests all possible version numbers and that
-// each number returned is the same
-func TestUUIDArray_VersionBits(t *testing.T) {
-	uArray := new(UUIDArray)
-	for v := 0; v < 16; v++ {
-		for i := 0; i <= 255; i ++ {
-			uuidBytes[versionIndex] = byte(i)
-			uArray.Unmarshal(uuidBytes)
-			uArray.setVersion(v)
-			output(uArray)
-			if uArray.Version() != v {
-				t.Errorf("%x does not resolve to %x", byte(uArray.Version()), v)
-			}
-			output("\n")
-		}
-	}
+var array_bytes = []byte{
+	0xAA, 0xCF, 0xEE, 0x12,
+	0xD4, 0x00,
+	0x27, 0x23,
+	0x00,
+	0xD3,
+	0x23, 0x12, 0x4A, 0x11, 0x89, 0xFF,
 }
 
 func TestUUIDArray_UnmarshalBinary(t *testing.T) {
@@ -50,18 +23,8 @@ func TestUUIDArray_UnmarshalBinary(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected error due to invalid byte length")
 	}
-	err = u.UnmarshalBinary(uuidBytes)
+	err = u.UnmarshalBinary(array_bytes)
 	if err != nil {
 		t.Errorf("Expected bytes")
 	}
 }
-
-func createUUIDArray(pData []byte, pVersion int, pVariant byte) *UUIDArray {
-	o := new(UUIDArray)
-	o.Unmarshal(pData)
-	o.setVersion(pVersion)
-	o.setVariant(pVariant)
-	return o
-}
-
-
