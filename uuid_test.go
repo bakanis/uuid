@@ -1,8 +1,8 @@
-/**
+package uuid
+/****************
  * Date: 3/02/14
  * Time: 10:59 PM
- */
-package uuid
+ ***************/
 
 import (
 	"crypto/md5"

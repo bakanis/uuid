@@ -1,8 +1,8 @@
-/**
+package uuid
+/****************
  * Date: 15/02/14
  * Time: 12:49 PM
- */
-package uuid
+ ***************/
 
 import (
 	"testing"

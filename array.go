@@ -1,8 +1,8 @@
-/**
+package uuid
+/****************
  * Date: 1/02/14
  * Time: 10:08 AM
- */
-package uuid
+ ***************/
 
 import (
 	"fmt"

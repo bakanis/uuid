@@ -1,8 +1,3 @@
-/**
- * Date: 31/01/14
- * Time: 3:35 PM
- */
-
 // This package provides RFC4122 UUID capabilities.
 // Also included in the package is a distinctly go way of creating a
 // unique id.
@@ -20,6 +15,10 @@
 // as such I have started a new repository.
 //  Copyright (C) 2014 twinj@github.com  2014 MIT style licence
 package uuid
+/****************
+ * Date: 31/01/14
+ * Time: 3:35 PM
+ ***************/
 
 import (
 	"encoding/hex"
@@ -63,14 +62,15 @@ func init() {
 // Each implementation must also implement the UniqueName interface
 type UUID interface {
 
-	// Marshals the UUID bytes or data in a slice
+	// Marshals the UUID bytes or data
 	Bytes() (data []byte)
 
 	// Organises data into a new UUID
 	Unmarshal(pData []byte)
 
-	// Size is used in case different implementations require
-	// a larger size
+	// Size is used where different implementations require
+	// different sizes. Should return the number of bytes in
+	// the implementation.
 	// Enables unmarshal and Bytes to screen for size
 	Size() int
 
