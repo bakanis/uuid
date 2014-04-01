@@ -140,7 +140,7 @@ pastInit:
 // ***********************************************  StateEntity
 
 // StateEntity acts as a marshaller struct for the state
-type StateEntity struct {
+type stateEntity struct {
 	Past       Timestamp
 	Node       []byte
 	Sequence   uint16
@@ -152,7 +152,7 @@ func (o *State) encode() {
 	o.check.Seek(0, 0)
 	enc := gob.NewEncoder(o.check)
 	// Wrap private State data into the StateEntity
-	entity := StateEntity{state.past, state.node, state.sequence}
+	entity := stateEntity{state.past, state.node, state.sequence}
 	err := enc.Encode(&entity)
 	if err != nil {
 		log.Panic("UUID.encode error:", err)
@@ -163,7 +163,7 @@ func (o *State) encode() {
 func (o *State) decode() error {
 	o.check.Seek(0, 0)
 	dec := gob.NewDecoder(o.check)
-	entity := StateEntity{}
+	entity := stateEntity{}
 	err := dec.Decode(&entity)
 	if err != nil {
 		log.Println("UUID.decode error:", err)

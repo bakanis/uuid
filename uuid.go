@@ -2,7 +2,7 @@
 // Also included in the package is a distinctly go way of creating a
 // unique id.
 //
-// NewV1, NewV3, NewV4, NewV5, for generating versions 3, 4
+// NewV1, NewV3, NewV4, NewV5, for generating versions 1, 3, 4
 // and 5 UUIDs as specified in RFC 4122.
 //
 // New([]byte), unsafe NewHex(string) and safe ParseUUID(string) for
@@ -94,8 +94,8 @@ type UUID interface {
 	String() string
 }
 
-// New creates a UUID object from data byte slice.
-// It will truncate any bytes past the default length
+// New creates a UUID object from a data byte slice.
+// It will truncate any bytes past the default length of 16
 // It will panic if data slice is too small
 func New(pData []byte) UUID {
 	o := new(UUIDArray)
@@ -103,8 +103,10 @@ func New(pData []byte) UUID {
 	return o
 }
 
-// GoId creates a UUID object based on timestamps and the hash.
-// It will truncate any bytes past the default length
+// GoId creates a UUID object based on timestamps and a hash.
+// It will truncate any bytes past the length of the initial hash.
+// This creates a UUID based on a Namespace, UniqueName and an existing
+// hash.
 func GoId(pNs UUID, pName UniqueName, pHash hash.Hash) UUID {
 	o := new(UUIDStruct)
 	o.size = pHash.Size()
@@ -127,7 +129,7 @@ func formatGoId(o *UUIDStruct, pNow Timestamp, pVersion uint16, pVariant byte, p
 }
 
 // Creates a UUID from a valid hex string
-// Will panic if hex string is invalid - this includes hyphens and brackets
+// Will panic if hex string is invalid - will panic even with hyphens and brackets
 func NewHex(pUuid string) UUID {
 	bytes, err := hex.DecodeString(pUuid)
 	if err != nil {
@@ -136,12 +138,13 @@ func NewHex(pUuid string) UUID {
 	return New(bytes)
 }
 
-// ParseUUID creates a UUID object a valid string representation.
+// ParseUUID creates a UUID object from a valid string representation.
 // Accepts UUID string in following formats:
-//     6ba7b8149dad11d180b400c04fd430c8
-//     6ba7b814-9dad-11d1-80b4-00c04fd430c8
-//     {6ba7b814-9dad-11d1-80b4-00c04fd430c8}
-//     urn:uuid:6ba7b814-9dad-11d1-80b4-00c04fd430c8
+//		6ba7b8149dad11d180b400c04fd430c8
+//		6ba7b814-9dad-11d1-80b4-00c04fd430c8
+//		{6ba7b814-9dad-11d1-80b4-00c04fd430c8}
+//		urn:uuid:6ba7b814-9dad-11d1-80b4-00c04fd430c8
+//		[6ba7b814-9dad-11d1-80b4-00c04fd430c8]
 //
 func ParseUUID(pUUID string) (UUID, error) {
 	md := parseUUIDRegex.FindStringSubmatch(pUUID)
@@ -151,10 +154,11 @@ func ParseUUID(pUUID string) (UUID, error) {
 	return NewHex(md[2] + md[3] + md[4] + md[5] + md[6]), nil
 }
 
-// Digest a namespace UUID and a Name, which then  marshals to the UUID
+// Digest a namespace UUID and a UniqueName, which then  marshals to
+// a new UUID
 func Digest(o, pNs UUID, pName UniqueName, pHash hash.Hash) {
 	if (o == nil || pNs == nil || pName == nil || pHash == nil) {
-		panic("UUID.Digest: nil paramaters")
+		panic("UUID.Digest: nil parameters")
 	}
 	// Hash writer never returns an error
 	pHash.Write(pNs.Bytes())
@@ -173,14 +177,14 @@ func UnmarshalBinary(o UUID , pData []byte) error {
 
 // **********************************************  UUID Names
 
-// Name is a simple string wrapper which implements UniqueName
+// Name is a simple string which implements UniqueName
 type Name string
 
 func (o Name) String() string {
 	return string(o)
 }
 
-// NewName will enable one to create a name from several sources
+// NewName will create a name from several sources
 func NewName(salt string, pNames... UniqueName) UniqueName {
 	var s string
 	for _, s2 := range pNames {
@@ -189,7 +193,7 @@ func NewName(salt string, pNames... UniqueName) UniqueName {
 	return Name(s + salt)
 }
 
-// Interface extends the Stringer interface
+// UniqueName is a Stinger interface
 // Made for easy passing of IPs, URLs, the several Address types,
 // Buffers and any other type which implements Stringer
 // string, []byte types and Hash sums will need to be cast to

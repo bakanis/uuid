@@ -158,6 +158,7 @@ func formatV1(pNow Timestamp, pVersion uint16, pVariant byte, pNode []byte) UUID
 	return o
 }
 
+// Set whether teh system forces random nodeId generation
 func ForceRandomNodeId(pRandomNode bool) {
 	state.randomNode = pRandomNode
 }
