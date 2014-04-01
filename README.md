@@ -5,7 +5,7 @@ This package provides a UUID interface
 Functions NewV1, NewV3, NewV4, NewV5, New, NewHex and ParseUUID() for generating versions 3, 4
 and 5 UUIDs are as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
 
-# Recent Changes to original work by nu7hatch @ github.com/nu7hatch/gouuid
+# Recent Changes to original work by nu7hatch
 
 * Varient type bits are now set correctly
 * Varient type can now be retrieved more efficiently
@@ -24,11 +24,11 @@ and 5 UUIDs are as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
 
 Use the `go` tool:
 
-	$ go get github.com/twinj/unique
+	$ go get github.com/twinj/uuid
 
 ## Usage
 
-See [documentation and examples](http://godoc.org/github.com/twinj/unique)
+See [documentation and examples](http://godoc.org/github.com/twinj/uuid)
 for more information.
 
 ## Copyright
@@ -43,5 +43,5 @@ file for details.
 Also see: Algorithm details in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
 
 Copyright (C) 2014 twinj@github.com
-See [LICENSE](https://github.com/twinj/unique/tree/master/LICENSE)
+See [LICENSE](https://github.com/twinj/uuid/tree/master/LICENSE)
 file for details.
