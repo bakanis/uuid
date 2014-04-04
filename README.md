@@ -1,6 +1,13 @@
 # Go UUID implementation
+========================
 
-This package provides a UUID interface
+This package provides RFC 4122 compliant UUIDs.
+It will generate the following:
+
+* Version 1: based on timestamp and MAC address
+* Version 3: based on MD5 hash
+* Version 4: based on crytographically secure random numbers
+* Version 5: based on SHA-1 hash
 
 Functions NewV1, NewV3, NewV4, NewV5, New, NewHex and ParseUUID() for generating versions 3, 4
 and 5 UUIDs are as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
