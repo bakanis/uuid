@@ -1,5 +1,8 @@
-# Go UUID implementation
+Go UUID implementation
 ========================
+
+[![Build Status](https://travis-ci.org/twinj/uuid.png?branch=master)](https://travis-ci.org/twinj/uuid)
+[![GoDoc](http://godoc.org/github.com/twinj/uuid?status.png)](http://godoc.org/github.com/twinj/uuid)
 
 This package provides RFC 4122 compliant UUIDs.
 It will generate the following:
