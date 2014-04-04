@@ -19,7 +19,7 @@ const (
 )
 
 var uuid_goLang Name = "https://google.com/golang.org?q=golang"
-var printer bool = true
+var printer bool = false
 var uuid_bytes = []byte{
 	0xAA, 0xCF, 0xEE, 0x12,
 	0xD4, 0x00,
