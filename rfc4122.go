@@ -5,6 +5,7 @@ package uuid
  ***************/
 
 import (
+	"bytes"
 	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha1"
@@ -111,7 +112,7 @@ func currentUUIDNodeId() (node net.HardwareAddr) {
 		h := sha1.New()
 		h.Write(b)
 		binary.Write(h, binary.LittleEndian, state.sequence)
-		node = h.Sum(nil)
+		node = h.Sum(nil)[:6]
 		if err != nil {
 			log.Println("UUID.currentUUIDNodeId error:", err)
 			node = nodeId
@@ -129,11 +130,11 @@ func getHardwareAddress(pInterfaces []net.Interface) net.HardwareAddr {
 	for _, inter := range pInterfaces {
 		// Initially I could multicast out the Flags to get
 		// whether the interface was up but started failing
-		//if (inter.Flags & (1<<net.FlagUp)) != 0  {
-		if inter.Flags.String() != "0" {
+		if (inter.Flags & (1<<net.FlagUp)) != 0  {
+		//if inter.Flags.String() != "0" {
 			if addrs, err := inter.Addrs(); err == nil {
 				for _, addr := range addrs {
-					if addr.String() != "0.0.0.0" {
+					if addr.String() != "0.0.0.0" && !bytes.Equal(inter.HardwareAddr, make([]byte, len(inter.HardwareAddr))) {
 						return inter.HardwareAddr
 					}
 				}
