@@ -13,8 +13,12 @@ import (
 	seed "math/rand"
 )
 
+var (
+	Report bool
+)
+
 func init() {
-	gob.Register(State{})
+	gob.Register(stateEntity{})
 }
 
 // **************************************************** State
@@ -78,7 +82,9 @@ func (o *State) save() {
 		o.encode()
 		// schedule next save for 10 seconds from now
 		o.next = o.past + 10*ticksPerSecond
-		log.Printf("UUID STATE: SAVED %d", o.past)
+		if Report {
+			log.Printf("UUID STATE: SAVED %d", o.past)
+		}
 	}
 }
 

@@ -15,6 +15,10 @@ It will generate the following:
 Functions NewV1, NewV3, NewV4, NewV5, New, NewHex and ParseUUID() for generating versions 3, 4
 and 5 UUIDs are as specified in [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt).
 
+# Requirements
+
+Go 1.2 and tip supported.
+
 # Recent Changes to original work by nu7hatch
 
 * Varient type bits are now set correctly
