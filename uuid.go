@@ -157,9 +157,6 @@ func ParseUUID(pUUID string) (UUID, error) {
 // Digest a namespace UUID and a UniqueName, which then  marshals to
 // a new UUID
 func Digest(o, pNs UUID, pName UniqueName, pHash hash.Hash) {
-	if (o == nil || pNs == nil || pName == nil || pHash == nil) {
-		panic("UUID.Digest: nil parameters")
-	}
 	// Hash writer never returns an error
 	pHash.Write(pNs.Bytes())
 	pHash.Write([]byte(pName.String()))

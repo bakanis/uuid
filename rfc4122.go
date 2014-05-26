@@ -53,9 +53,8 @@ func init() {
 func NewV1() UUID {
 	runtime.LockOSThread()
 	now := currentUUIDTimestamp()
-	node := currentUUIDNodeId()
-	state.read(now, node)
-	state.save()
+	state.read(now, currentUUIDNodeId())
+	state.persist()
 	runtime.UnlockOSThread()
 	return formatV1(now, 1, ReservedRFC4122, state.node)
 }

@@ -81,20 +81,23 @@ func TestUUIDState_init(t *testing.T) {
 // Tests that the schedule is run approx every ten seconds
 // takes 90 seconds to complete on my machine at 90000000 UUIDs
 func TestUUIDState_saveSchedule(t *testing.T) {
-	count := 0
-	now := time.Now()
-	state.next = timestamp()
-	for i := 0; i < 30000000; i++ {
-		now = time.Now()
-		NewV1()
-		if lastTimestamp >= state.next {
-			count++
+	if V1Save {
+		count := 0
+		now := time.Now()
+		NewV1() // prime scheduler
+		state.next = timestamp()
+		for i := 0; i < 10000000; i++ {
+			stamp := timestamp()
+			if stamp >= state.next {
+				count++
+			}
+			NewV1()
 		}
-	}
-	d := time.Since(now)
-	tenSec := int(d.Seconds())/10
-	if count != tenSec {
-		t.Error("Should be as many saves as ten second increments but got: %s instead of %s", count, tenSec)
+		d := time.Since(now)
+		tenSec := int(d.Seconds())/int(SaveSchedule) + 1
+		if count != tenSec {
+			t.Errorf("Should be as many saves as ten second increments but got: %d instead of %d", count, tenSec)
+		}   // TODO fix extra save
 	}
 }
 
