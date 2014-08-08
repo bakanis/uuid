@@ -1,4 +1,5 @@
 package uuid
+
 /****************
  * Date: 14/02/14
  * Time: 9:08 PM
@@ -20,7 +21,7 @@ var state_bytes = []byte{
 }
 
 func TestUUID_StateSeed(t *testing.T) {
-	if state.past < Timestamp((1391463463*10000000) + (100*10) + gregorianToUNIXOffset) {
+	if state.past < Timestamp((1391463463*10000000)+(100*10)+gregorianToUNIXOffset) {
 		t.Errorf("Expected a value greater than 02/03/2014 @ 9:37pm in UTC but got %d", state.past)
 	}
 	if state.node == nil {
@@ -33,11 +34,11 @@ func TestUUID_StateSeed(t *testing.T) {
 
 func TestUUIDState_read(t *testing.T) {
 	s := new(State)
-	s.past = Timestamp((1391463463*10000000) + (100*10) + gregorianToUNIXOffset)
+	s.past = Timestamp((1391463463*10000000)+(100*10)+gregorianToUNIXOffset)
 	s.node = state_bytes
 
-	now := Timestamp((1391463463*10000000) + (100*10))
-	s.read(now + (100*10), make([]byte, length))
+	now := Timestamp((1391463463 * 10000000) + (100 * 10))
+	s.read(now+(100*10), make([]byte, length))
 
 	if s.sequence != 1 {
 		t.Error("The sequence should increment when the time is" +
@@ -52,7 +53,7 @@ func TestUUIDState_read(t *testing.T) {
 	}
 
 	s = new(State)
-	s.past = Timestamp((1391463463*10000000) + (100*10) + gregorianToUNIXOffset)
+	s.past = Timestamp((1391463463*10000000)+(100*10)+gregorianToUNIXOffset)
 	s.node = state_bytes
 	s.randomSequence = true
 	s.read(now, make([]byte, length))
@@ -94,7 +95,7 @@ func TestUUIDState_saveSchedule(t *testing.T) {
 			NewV1()
 		}
 		d := time.Since(now)
-		tenSec := int(d.Seconds())/int(SaveSchedule) + 1
+		tenSec := int(d.Seconds()) / int(SaveSchedule) + 1
 		if count != tenSec {
 			t.Errorf("Should be as many saves as ten second increments but got: %d instead of %d", count, tenSec)
 		}   // TODO fix extra save
